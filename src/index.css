@@ -5,3 +5,6 @@
 html body {
   background: #383636;
 }
+#TaskList::-webkit-scrollbar {
+  display: none;
+}
