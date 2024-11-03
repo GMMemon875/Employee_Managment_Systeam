@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 
-const Login = () => {
+const Login = ({ handleSubmit }) => {
   const [email, Setemail] = useState("");
   const [password, Setpassword] = useState("");
   const onclicHandler = (e) => {
     e.preventDefault();
-    console.log("email", email, "password", password);
 
-    Setpassword("");
-    Setemail("");
+    Setpassword(" ");
+    handleSubmit(email, password);
+    Setemail(" ");
   };
 
   return (
