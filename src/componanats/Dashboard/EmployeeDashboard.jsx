@@ -4,12 +4,11 @@ import TaskNumber from "../other/TaskNumber";
 import TaskList from "../other/TaskList";
 
 const EmployeeDashboard = ({ data }) => {
-  console.log(data);
   return (
     <div>
       <Header data={data} />
-      <TaskNumber />
-      <TaskList />
+      <TaskNumber data={data} />
+      <TaskList data={data} />
     </div>
   );
 };

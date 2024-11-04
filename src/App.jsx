@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import AdminDashbord from "./componanats/Dashboard/AdminDashbord";
-// import { gettLocalSstorage, setLocalSstorage } from "./utils/LocalStorage";
+
 import EmployeeDashboard from "./componanats/Dashboard/EmployeeDashboard";
 import Login from "./componanats/Auth/Login";
 import { AuthContext } from "./Context/AuthProvider";
@@ -8,9 +8,28 @@ import { setLocalSstorage } from "./utils/LocalStorage";
 
 const App = () => {
   const [user, setUser] = useState(null);
-  const [logedIn, setLogedIn] = useState(null);
+  const [logedIn, setLoggedIn] = useState(null);
   const userData = useContext(AuthContext);
 
+  useEffect(() => {
+    const isLoggedInUser = localStorage.getItem("IsLogedInUser");
+
+    // Check if the value exists before parsing
+    if (isLoggedInUser) {
+      try {
+        const user = JSON.parse(isLoggedInUser);
+        setUser(user.roll);
+        setLoggedIn(user.data);
+      } catch (error) {
+        console.error("Error parsing JSON from localStorage:", error);
+        localStorage.removeItem("IsLogedInUser"); // Remove invalid data
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    setLocalSstorage();
+  });
   const handleSubmit = (email, password) => {
     if (email == "admin@me.gmail.com" && password == "123") {
       setUser("admin");
@@ -21,24 +40,17 @@ const App = () => {
       );
       if (employees) {
         setUser("employee");
-        setLogedIn(employees);
+        setLoggedIn(employees);
         localStorage.setItem(
           "IsLogedInUser",
-          JSON.stringify({ roll: "employee" })
+          JSON.stringify({ roll: "employee", data: employees })
         );
       }
     } else {
-      // console.log(" Invalid User Or Admin");
+      alert("Invalid UserName Or Password");
     }
   };
-  handleSubmit();
 
-  useEffect(() => {
-    setLocalSstorage();
-  }, []);
-
-  // const data = useContext(AuthContext);
-  // console.log(data);
   return (
     <>
       {!user ? <Login handleSubmit={handleSubmit} /> : ""}
